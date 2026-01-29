@@ -49,7 +49,8 @@ static int api_search_generic(const char *param, const char *query, Station *res
     char url[1024];
     char *encoded_query = curl_easy_escape(curl_handle, query, 0);
     // Use the provided param name (e.g. "name" or "countrycode")
-    snprintf(url, sizeof(url), "http://de1.api.radio-browser.info/json/stations/search?%s=%s&limit=%d", param, encoded_query, max_results);
+    // Added order=votes and reverse=true to get highest voted stations first
+    snprintf(url, sizeof(url), "http://de1.api.radio-browser.info/json/stations/search?%s=%s&limit=%d&order=votes&reverse=true", param, encoded_query, max_results);
     curl_free(encoded_query);
 
     curl_easy_setopt(curl_handle, CURLOPT_URL, url);
@@ -90,6 +91,7 @@ static int api_search_generic(const char *param, const char *query, Station *res
             
             cJSON *country = cJSON_GetObjectItemCaseSensitive(item, "country");
             cJSON *tags = cJSON_GetObjectItemCaseSensitive(item, "tags");
+            cJSON *votes = cJSON_GetObjectItemCaseSensitive(item, "votes");
             cJSON *uuid = cJSON_GetObjectItemCaseSensitive(item, "stationuuid");
 
             if (cJSON_IsString(name) && (name->valuestring != NULL)) {
@@ -114,6 +116,12 @@ static int api_search_generic(const char *param, const char *query, Station *res
 
             if (cJSON_IsString(uuid) && (uuid->valuestring != NULL)) {
                  snprintf(results[count].station_uuid, sizeof(results[count].station_uuid), "%s", uuid->valuestring);
+            }
+
+            if (cJSON_IsNumber(votes)) {
+                results[count].votes = votes->valueint;
+            } else {
+                results[count].votes = 0;
             }
 
             count++;

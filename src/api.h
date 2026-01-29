@@ -9,6 +9,7 @@ typedef struct {
     char country[128];
     char tags[256];
     char station_uuid[64];
+    int votes;
 } Station;
 
 // Searches for stations by name/tag.
