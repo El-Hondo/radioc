@@ -144,3 +144,7 @@ int api_search_stations(const char *query, Station *results, int max_results) {
 int api_search_by_country(const char *country_code, Station *results, int max_results) {
     return api_search_generic("countrycode", country_code, results, max_results);
 }
+
+int api_search_by_tag(const char *tag, Station *results, int max_results) {
+    return api_search_generic("tag", tag, results, max_results);
+}

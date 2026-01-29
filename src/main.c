@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "api.h"
 #include "player.h"
 #include "favorites.h"
@@ -14,6 +15,9 @@ typedef enum {
 } list_mode_t;
 
 int main() {
+    setlocale(LC_ALL, ""); // Enable system locale for wide char support
+    setlocale(LC_NUMERIC, "C"); // Keep numeric locale "C" for correct parsing of numbers (JSON etc)
+
     // Initialization
     if (player_init() != 0) {
         fprintf(stderr, "Failed to initialize player.\n");
@@ -51,13 +55,13 @@ int main() {
         // Simple parser
         int args = sscanf(line, "%31s %[^\n]", cmd, arg); // Read cmd and potentially rest of line
 
-        if (strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0) {
+        if (strcmp(cmd, "quit") == 0 || strcmp(cmd, "q") == 0) {
             running = 0;
         } 
         else if (strcmp(cmd, "help") == 0 || strcmp(cmd, "?") == 0) {
             ui_print_help();
         }
-        else if (strcmp(cmd, "stop") == 0 || strcmp(cmd, "st") == 0) {
+        else if (strcmp(cmd, "stop") == 0 || strcmp(cmd, "s") == 0) {
             player_stop();
             printf("Stopped.\n");
         }
@@ -66,22 +70,37 @@ int main() {
             ui_print_stations(fav_list, fav_count, "Favorites");
             current_mode = MODE_FAVORITES;
         }
-        else if (strcmp(cmd, "search") == 0 || strcmp(cmd, "s") == 0) {
+        else if (strcmp(cmd, "find") == 0 || strcmp(cmd, "f") == 0) {
             if (args < 2) {
-                printf("Usage: search <term>\n");
+                printf("Usage: find <term>\n");
             } else {
-                printf("Searching for '%s'...\n", arg);
+                printf("Finding stations for '%s'...\n", arg);
                 int n = api_search_stations(arg, search_results, MAX_STATIONS);
                 if (n >= 0) {
                     search_count = n;
-                    ui_print_stations(search_results, search_count, "Search Results");
+                    ui_print_stations(search_results, search_count, "Found Stations");
                     current_mode = MODE_SEARCH_RESULTS;
                 } else {
                     printf("Search failed.\n");
                 }
             }
         }
-        else if (strcmp(cmd, "country") == 0 || strcmp(cmd, "co") == 0) {
+        else if (strcmp(cmd, "tag") == 0 || strcmp(cmd, "t") == 0) {
+            if (args < 2) {
+                printf("Usage: tag <term> (e.g. jazz, news)\n");
+            } else {
+                printf("Searching for stations with tag '%s'...\n", arg);
+                int n = api_search_by_tag(arg, search_results, MAX_STATIONS);
+                if (n >= 0) {
+                    search_count = n;
+                    ui_print_stations(search_results, search_count, "Tag Search Results");
+                    current_mode = MODE_SEARCH_RESULTS;
+                } else {
+                    printf("Search failed.\n");
+                }
+            }
+        }
+        else if (strcmp(cmd, "country") == 0 || strcmp(cmd, "c") == 0) {
             if (args < 2) {
                 printf("Usage: country <code> (e.g. US, DE)\n");
             } else {
@@ -115,7 +134,7 @@ int main() {
                 }
             }
         }
-        else if (strcmp(cmd, "add") == 0) {
+        else if (strcmp(cmd, "add") == 0 || strcmp(cmd, "a") == 0) {
              if (args < 2) {
                 printf("Usage: add <id> (from current list)\n");
             } else {
@@ -131,7 +150,7 @@ int main() {
                 }
             }
         }
-        else if (strcmp(cmd, "del") == 0) {
+        else if (strcmp(cmd, "del") == 0 || strcmp(cmd, "d") == 0) {
              if (args < 2) {
                 printf("Usage: del <id> (from favorites list)\n");
             } else {

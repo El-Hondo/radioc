@@ -20,4 +20,7 @@ int api_search_stations(const char *query, Station *results, int max_results);
 // Searches for stations by country code (e.g., 'US', 'DE')
 int api_search_by_country(const char *country_code, Station *results, int max_results);
 
+// Searches for stations by tag (e.g., 'jazz', 'news')
+int api_search_by_tag(const char *tag, Station *results, int max_results);
+
 #endif
