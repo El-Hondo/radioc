@@ -175,6 +175,9 @@ int main() {
                 }
             }
         }
+        else if (strcmp(cmd, "credits") == 0) {
+            ui_print_credits();
+        }
         else {
             printf("Unknown command. Type 'help' for options.\n");
         }

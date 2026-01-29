@@ -64,7 +64,15 @@ void ui_print_help() {
     printf("==========================\n");
 }
 
+void ui_print_credits() {
+    printf("\n=== VibeRadio Credits ===\n");
+    printf("  Author: El Gringo\n");
+    printf("  Version: 0.1\n");
+    printf("==========================\n");
+}
+
 void ui_print_stations(const Station *stations, int count, const char *title) {
+
     if (count == 0) {
         printf("\n--- %s ---\n", title);
         printf("No accessible stations found.\n");
