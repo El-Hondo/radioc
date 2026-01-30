@@ -150,9 +150,22 @@ void ui_print_stations(const Station *stations, int count, const char *title) {
     printf("└─────┴───────────────────────────────────┴─────────────────────────┴─────────────────────────┴───────────┘\n");
 }
 
+void ui_init() {
+    // Enter alternate screen buffer
+    printf("\033[?1049h");
+    fflush(stdout);
+}
+
+void ui_cleanup() {
+    // Leave alternate screen buffer
+    printf("\033[?1049l");
+    fflush(stdout);
+}
+
 void ui_clear_screen() {
-    // ANSI escape code to clear screen and move cursor to top-left
-    printf("\033[2J\033[H");
+    // ANSI escape code to clear screen, move cursor to top-left, and clear scrollback buffer
+    printf("\033[H\033[2J\033[3J");
+    fflush(stdout);
 }
 
 void ui_render_interface(const Station *active_station, 

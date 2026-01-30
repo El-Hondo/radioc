@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude -g
-LIBS = -lcurl -lvlc -lm
+LIBS = -lcurl -lvlc -lm -lreadline
 
 SRC = $(wildcard src/*.c) lib/cJSON.c
 OBJ = $(patsubst %.c, obj/%.o, $(notdir $(SRC)))

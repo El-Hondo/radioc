@@ -6,6 +6,8 @@
 #include "player.h"
 #include "favorites.h"
 #include "ui.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // State to track what the indices [1], [2] refer to
 // It can be either the search results or the favorites list
@@ -17,6 +19,9 @@ typedef enum {
 int main() {
     setlocale(LC_ALL, ""); // Enable system locale for wide char support
     setlocale(LC_NUMERIC, "C"); // Keep numeric locale "C" for correct parsing of numbers (JSON etc)
+    
+    // Switch to alternate screen buffer
+    ui_init();
 
     // Initialization
     if (player_init() != 0) {
@@ -51,11 +56,17 @@ int main() {
     int running = 1;
 
     while (running) {
-        printf("\nviberadio> ");
-        if (!fgets(line, sizeof(line), stdin)) break; // EOF
+        char *input_buf = readline("\nviberadio> ");
+        if (!input_buf) break; // EOF/Cntrl-D
 
-        // Strip newline
-        line[strcspn(line, "\n")] = 0;
+        if (strlen(input_buf) > 0) {
+            add_history(input_buf);
+        }
+
+        // Copy into our existing line buffer to minimalize refactor
+        snprintf(line, sizeof(line), "%s", input_buf);
+        free(input_buf);
+
         if (strlen(line) == 0) continue;
 
         char cmd[32];
@@ -296,5 +307,9 @@ int main() {
 
     if (current_song_title) free(current_song_title);
     player_cleanup();
+    
+    // Restore main screen buffer
+    ui_cleanup();
+    
     return 0;
 }
