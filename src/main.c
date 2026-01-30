@@ -56,7 +56,7 @@ int main() {
     int running = 1;
 
     while (running) {
-        char *input_buf = readline("\nviberadio> ");
+        char *input_buf = readline("\n" COLOR_BOLD_GREEN "viberadio> " COLOR_RESET);
         if (!input_buf) break; // EOF/Cntrl-D
 
         if (strlen(input_buf) > 0) {
@@ -127,7 +127,7 @@ int main() {
             if (args < 2 || strlen(arg) == 0) { // Check strlen arg because sscanf might fail to populate it
                  snprintf(status_message, sizeof(status_message), "Usage: find <term>");
             } else {
-                printf("Finding..."); // Temporary feedback?
+                printf(COLOR_CYAN "Finding..." COLOR_RESET); // Temporary feedback?
                 int n = api_search_stations(arg, search_results, MAX_STATIONS);
                 if (n >= 0) {
                     search_count = n;

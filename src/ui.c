@@ -7,6 +7,8 @@
 #include <locale.h>
 #include "ui.h"
 
+#include "ui.h"
+
 // Helper to remove control chars (newlines, tabs) and trim extra whitespace if needed
 static void sanitize_str(char *str) {
     char *src = str, *dst = str;
@@ -50,45 +52,45 @@ static int visual_width(const char *s) {
 }
 
 void ui_print_help() {
-    printf("\n=== VibeRadio Commands ===\n");
-    printf("  find or f <query>   : Find stations by name/tag\n");
-    printf("  list or l           : List saved favorites\n");
-    printf("  play or p <id>      : Play station from the LAST SHOWN list (search or favs)\n");
-    printf("  stop or s           : Stop playback\n");
-    printf("  add or a <id>       : Add station from LAST SHOWN list to favorites\n");
-    printf("  del or d <id>       : Delete station from FAVORITES list\n");
-    printf("  help or ?           : Show this message\n");
-    printf("  country or c <id>   : Search for stations by country code (e.g. US, DE)\n");
-    printf("  tag or t <tag>      : Search for stations by tag (e.g. jazz, pop)\n");
-    printf("  quit or q           : Exit\n");
-    printf("==========================\n");
+    printf("\n" COLOR_BOLD_MAGENTA "=== VibeRadio Commands ===" COLOR_RESET "\n");
+    printf("  " COLOR_BOLD_GREEN "find" COLOR_RESET " or " COLOR_BOLD_GREEN "f" COLOR_RESET " " COLOR_CYAN "<query>" COLOR_RESET "   : Find stations by name/tag\n");
+    printf("  " COLOR_BOLD_GREEN "list" COLOR_RESET " or " COLOR_BOLD_GREEN "l" COLOR_RESET "           : List saved favorites\n");
+    printf("  " COLOR_BOLD_GREEN "play" COLOR_RESET " or " COLOR_BOLD_GREEN "p" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "      : Play station from the LAST SHOWN list (search or favs)\n");
+    printf("  " COLOR_BOLD_GREEN "stop" COLOR_RESET " or " COLOR_BOLD_GREEN "s" COLOR_RESET "           : Stop playback\n");
+    printf("  " COLOR_BOLD_GREEN "add" COLOR_RESET " or " COLOR_BOLD_GREEN "a" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "       : Add station from LAST SHOWN list to favorites\n");
+    printf("  " COLOR_BOLD_GREEN "del" COLOR_RESET " or " COLOR_BOLD_GREEN "d" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "       : Delete station from FAVORITES list\n");
+    printf("  " COLOR_BOLD_GREEN "help" COLOR_RESET " or " COLOR_BOLD_GREEN "?" COLOR_RESET "           : Show this message\n");
+    printf("  " COLOR_BOLD_GREEN "country" COLOR_RESET " or " COLOR_BOLD_GREEN "c" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "   : Search for stations by country code (e.g. US, DE)\n");
+    printf("  " COLOR_BOLD_GREEN "tag" COLOR_RESET " or " COLOR_BOLD_GREEN "t" COLOR_RESET " " COLOR_CYAN "<tag>" COLOR_RESET "      : Search for stations by tag (e.g. jazz, pop)\n");
+    printf("  " COLOR_BOLD_GREEN "quit" COLOR_RESET " or " COLOR_BOLD_GREEN "q" COLOR_RESET "           : Exit\n");
+    printf(COLOR_BOLD_MAGENTA "==========================" COLOR_RESET "\n");
 }
 
 void ui_print_credits() {
-    printf("\n=== VibeRadio Credits ===\n");
-    printf("  Author: El Gringo\n");
-    printf("  Version: 0.1\n");
-    printf("==========================\n");
+    printf("\n" COLOR_BOLD_MAGENTA "=== VibeRadio Credits ===" COLOR_RESET "\n");
+    printf("  Author: " COLOR_BOLD_WHITE "El Gringo" COLOR_RESET "\n");
+    printf("  Version: " COLOR_CYAN "0.1" COLOR_RESET "\n");
+    printf(COLOR_BOLD_MAGENTA "==========================" COLOR_RESET "\n");
 }
 
 void ui_print_stations(const Station *stations, int count, const char *title) {
 
     if (count == 0) {
-        printf("\n--- %s ---\n", title);
-        printf("No accessible stations found.\n");
+        printf("\n" COLOR_BOLD_RED "--- %s ---" COLOR_RESET "\n", title);
+        printf(COLOR_RED "No accessible stations found." COLOR_RESET "\n");
         return;
     }
 
     // Header - votes column widened to 9 characters
-    printf("\n┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓\n");
-    printf("┃ ID  ┃ Station                           ┃ Country                 ┃ Tags                    ┃ votes     ┃\n");
-    printf("┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩\n");
+    // Header - tags column widened to 37 characters (merged with votes)
+    printf("\n" BORDER_COLOR "┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" HEADER_COLOR " ID  " BORDER_COLOR "┃" HEADER_COLOR " Station                           " BORDER_COLOR "┃" HEADER_COLOR " Country                 " BORDER_COLOR "┃" HEADER_COLOR " Tags                                " BORDER_COLOR "┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩" COLOR_RESET "\n");
 
     for (int i = 0; i < count; i++) {
         char name[256];
         char country[256];
         char tags[256];
-        char votes[16];
 
         // Format and truncate strings
         // We use larger buffers but will check visual width
@@ -113,15 +115,13 @@ void ui_print_stations(const Station *stations, int count, const char *title) {
              if (visual_width(country) <= 20) { strcat(country, "..."); break; }
         }
 
-        // Tags: Max visual width 23
+        // Tags: Max visual width 35 (expanded)
         snprintf(tags, sizeof(tags), "%s", stations[i].tags);
         sanitize_str(tags);
-        while (visual_width(tags) > 23) {
+        while (visual_width(tags) > 35) {
              tags[strlen(tags)-1] = 0;
-             if (visual_width(tags) <= 20) { strcat(tags, "..."); break; }
+             if (visual_width(tags) <= 32) { strcat(tags, "..."); break; }
         }
-
-        snprintf(votes, sizeof(votes), "%d", stations[i].votes);
 
         // Calculate padding
         int pad_name = 33 - visual_width(name);
@@ -130,24 +130,16 @@ void ui_print_stations(const Station *stations, int count, const char *title) {
         int pad_country = 23 - visual_width(country);
         if (pad_country < 0) pad_country = 0;
 
-        int pad_tags = 23 - visual_width(tags);
+        int pad_tags = 35 - visual_width(tags);
         if (pad_tags < 0) pad_tags = 0;
         
-        // Votes width is now 9
-        // We want left alignment usually for text, but votes is number. 
-        // User example looked like left aligned or maybe just whatever. 
-        // Let's stick to left alignment as per previous implementation `%-5s`
-        // But the header "votes" uses 5 chars.
-        // It's a nice column, let's make it 9 chars wide.
-        
-        printf("│ %-3d │ %s%*s │ %s%*s │ %s%*s │ %-9s │\n", 
+        printf(BORDER_COLOR "│" ID_COLOR " %-3d " BORDER_COLOR "│" NAME_COLOR " %s%*s " BORDER_COLOR "│" META_COLOR " %s%*s " BORDER_COLOR "│" TAGS_COLOR " %s%*s " BORDER_COLOR "│" COLOR_RESET "\n", 
                i + 1, 
                name, pad_name, "",
                country, pad_country, "",
-               tags, pad_tags, "",
-               votes);
+               tags, pad_tags, "");
     }
-    printf("└─────┴───────────────────────────────────┴─────────────────────────┴─────────────────────────┴───────────┘\n");
+    printf(BORDER_COLOR "└─────┴───────────────────────────────────┴─────────────────────────┴─────────────────────────────────────┘" COLOR_RESET "\n");
 }
 
 void ui_init() {
@@ -184,16 +176,44 @@ void ui_render_interface(const Station *active_station,
 
     // 2. Draw Status Message (if any)
     if (status_message && *status_message) {
-        printf("\n>> %s\n", status_message);
+        printf("\n" COLOR_BOLD_YELLOW ">> %s" COLOR_RESET "\n", status_message);
     }
 
     // 3. Draw Persistent "Now Playing" Banner
     if (active_station) {
-        printf("\n=========================================================================================\n");
-        printf(" ♫ NOW PLAYING: %s\n", active_station->name);
-        if (song_title && *song_title) {
-            printf(" ♬ INFO:        %s\n", song_title);
+        // Calculate target width inside the box
+        // Total box width = 107. Borders = 2. Content = 105.
+        // Label " ♫  NOW PLAYING: " is 17 chars (1+1+2+12+1)
+        // Trailing space = 1.
+        // Max name width = 105 - 17 - 1 = 87.
+        
+        char display_name[256];
+        snprintf(display_name, sizeof(display_name), "%s", active_station->name);
+        sanitize_str(display_name);
+        while (visual_width(display_name) > 87) {
+             display_name[strlen(display_name)-1] = 0;
+             if (visual_width(display_name) <= 84) { strcat(display_name, "..."); break; }
         }
-        printf("=========================================================================================\n");
+        int pad_name = 87 - visual_width(display_name);
+        if (pad_name < 0) pad_name = 0;
+
+        printf("\n" COLOR_BOLD_MAGENTA "╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗" COLOR_RESET "\n");
+        printf(COLOR_BOLD_MAGENTA "║" COLOR_RESET " ♫  " COLOR_BOLD_CYAN "NOW PLAYING:" COLOR_BOLD_WHITE " %s%*s " COLOR_BOLD_MAGENTA "║" COLOR_RESET "\n", display_name, pad_name, "");
+        
+        if (song_title && *song_title) {
+            char display_title[256];
+            snprintf(display_title, sizeof(display_title), "%s", song_title);
+            sanitize_str(display_title);
+            while (visual_width(display_title) > 87) {
+                 display_title[strlen(display_title)-1] = 0;
+                 if (visual_width(display_title) <= 84) { strcat(display_title, "..."); break; }
+            }
+            int pad_title = 87 - visual_width(display_title);
+            if (pad_title < 0) pad_title = 0;
+            
+            // Align "INFO:" to match "NOW PLAYING:" length (12 chars) -> "INFO:       "
+            printf(COLOR_BOLD_MAGENTA "║" COLOR_RESET " ♬  " COLOR_CYAN "INFO:       " COLOR_WHITE " %s%*s " COLOR_BOLD_MAGENTA "║" COLOR_RESET "\n", display_title, pad_title, "");
+        }
+        printf(COLOR_BOLD_MAGENTA "╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝" COLOR_RESET "\n");
     }
 }
