@@ -63,3 +63,30 @@ void player_stop() {
         libvlc_media_player_stop(mp);
     }
 }
+
+char* player_get_metadata() {
+    if (!mp) return NULL;
+    
+    libvlc_media_t *m = libvlc_media_player_get_media(mp);
+    if (!m) return NULL;
+
+    // libvlc_media_player_get_media increments refcount? No, usually it doesn't.
+    // Wait, documentation says: "The media player holds a reference to the media instance..."
+    // But `libvlc_media_player_get_media` returns the media associated with the player.
+    // We should parse it just in case metadata isn't parsed yet, but for a stream it might be async.
+    // libvlc_media_parse_with_options(m, libvlc_media_parse_local, 0); // Blocking parse might be too slow.
+    
+    // Try to get NowPlaying
+    char *meta = libvlc_media_get_meta(m, libvlc_meta_NowPlaying);
+    if (!meta) {
+        // Fallback to Title
+        meta = libvlc_media_get_meta(m, libvlc_meta_Title);
+    }
+    
+    // We don't release 'm' because we didn't create a new reference, we just got a pointer from mp.
+    // ACTUALLY, checking docs: libvlc_media_player_get_media DOES return a new reference.
+    // So we must release it.
+    libvlc_media_release(m);
+
+    return meta; // Caller frees this
+}

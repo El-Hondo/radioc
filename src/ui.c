@@ -149,3 +149,38 @@ void ui_print_stations(const Station *stations, int count, const char *title) {
     }
     printf("└─────┴───────────────────────────────────┴─────────────────────────┴─────────────────────────┴───────────┘\n");
 }
+
+void ui_clear_screen() {
+    // ANSI escape code to clear screen and move cursor to top-left
+    printf("\033[2J\033[H");
+}
+
+void ui_render_interface(const Station *active_station, 
+                         const char *song_title, 
+                         const char *status_message, 
+                         const Station *list, 
+                         int list_count, 
+                         const char *list_title) {
+    
+    ui_clear_screen();
+
+    // 1. Draw List if available
+    if (list && list_count > 0) {
+        ui_print_stations(list, list_count, list_title ? list_title : "Stations");
+    }
+
+    // 2. Draw Status Message (if any)
+    if (status_message && *status_message) {
+        printf("\n>> %s\n", status_message);
+    }
+
+    // 3. Draw Persistent "Now Playing" Banner
+    if (active_station) {
+        printf("\n=========================================================================================\n");
+        printf(" ♫ NOW PLAYING: %s\n", active_station->name);
+        if (song_title && *song_title) {
+            printf(" ♬ INFO:        %s\n", song_title);
+        }
+        printf("=========================================================================================\n");
+    }
+}
