@@ -7,7 +7,8 @@ static libvlc_instance_t * inst;
 static libvlc_media_player_t *mp;
 
 int player_init() {
-    inst = libvlc_new(0, NULL);
+    const char *vlc_args[] = { "--quiet", "--no-video" };
+    inst = libvlc_new(2, vlc_args);
     if (!inst) {
         fprintf(stderr, "Failed to create libvlc instance\n");
         return -1;
