@@ -65,6 +65,24 @@ void player_stop() {
     }
 }
 
+int player_set_volume(int adjustment) {
+    if (!mp) return -1;
+    int vol = libvlc_audio_get_volume(mp);
+    if (vol < 0) vol = 50; // Default if query fails?
+    
+    vol += adjustment;
+    if (vol > 100) vol = 100;
+    if (vol < 0) vol = 0;
+    
+    libvlc_audio_set_volume(mp, vol);
+    return vol; // Return new volume
+}
+
+int player_get_volume() {
+    if (!mp) return 0;
+    return libvlc_audio_get_volume(mp);
+}
+
 char* player_get_metadata() {
     if (!mp) return NULL;
     

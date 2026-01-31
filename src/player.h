@@ -19,4 +19,10 @@ void player_stop();
 // or NULL if no metadata is available.
 char* player_get_metadata();
 
+// Adjust volume by relative amount (+/-). Returns new volume (0-100).
+int player_set_volume(int adjustment);
+
+// Get current volume
+int player_get_volume();
+
 #endif

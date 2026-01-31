@@ -5,14 +5,13 @@
 
 void ui_print_help();
 void ui_print_credits();
-void ui_print_stations(const Station *stations, int count, const char *title);
 
 
 // Initialize UI (e.g. enter alternate screen buffer)
 void ui_init();
 
 // ANSI Color Codes
-#define COLOR_RESET       "\033[0m"
+#define COLOR_RESET       current_theme.reset
 #define COLOR_BOLD        "\033[1m"
 #define COLOR_DIM         "\033[2m"
 #define COLOR_ITALIC      "\033[3m"
@@ -31,13 +30,39 @@ void ui_init();
 #define COLOR_BOLD_CYAN   "\033[1;36m"
 #define COLOR_BOLD_WHITE  "\033[1;37m"
 
-#define BORDER_COLOR      COLOR_BLUE
-#define HEADER_COLOR      COLOR_BOLD_CYAN
-#define ID_COLOR          COLOR_YELLOW
-#define NAME_COLOR        COLOR_BOLD_WHITE
-#define META_COLOR        COLOR_CYAN
-#define TAGS_COLOR        COLOR_MAGENTA
-#define VOTES_COLOR       COLOR_GREEN
+// Theme Structure
+typedef struct {
+    char name[32];
+    const char *border;
+    const char *header;
+    const char *id;
+    const char *name_col;
+    const char *meta;
+    const char *tags;
+    const char *votes;
+    const char *highlight_bg; // Background for selection
+    const char *highlight_fg; // Foreground for selection
+    const char *background;   // Global background color
+    const char *reset;        // Custom reset string (e.g. \033[0m or \033[0m\033[44m)
+} UITheme;
+
+// Global current theme
+extern UITheme current_theme;
+
+// Color Macros (Now Dynamic)
+#define BORDER_COLOR      current_theme.border
+#define HEADER_COLOR      current_theme.header
+#define ID_COLOR          current_theme.id
+#define NAME_COLOR        current_theme.name_col
+#define META_COLOR        current_theme.meta
+#define TAGS_COLOR        current_theme.tags
+#define VOTES_COLOR       current_theme.votes
+
+// Function to set theme by name
+void ui_set_theme(const char *theme_name);
+
+// Cycle to next available theme
+void ui_cycle_theme();
 
 // Cleanup UI (e.g. leave alternate screen buffer)
 void ui_cleanup();
@@ -46,11 +71,15 @@ void ui_cleanup();
 void ui_clear_screen();
 
 // Main render function to draw the persistent UI
+// selected_index: -1 for none, or 0-based index to highlight
 void ui_render_interface(const Station *active_station, 
                          const char *song_title, 
                          const char *status_message, 
                          const Station *list, 
                          int list_count, 
-                         const char *list_title);
+                         const char *list_title,
+                         int selected_index);
+
+void ui_print_stations(const Station *stations, int count, const char *title, int selected_index, int start_index);
 
 #endif
