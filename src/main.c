@@ -31,7 +31,6 @@ int main() {
     favorites_load();
 
     // State
-    // State
     Station search_results[MAX_STATIONS];
     int search_count = 0;
     

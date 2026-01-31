@@ -51,19 +51,24 @@ static int visual_width(const char *s) {
     return w;
 }
 
+// 105 chars of internal width: 29 for Command, 75 for Description, 1 for separator. Total 105.
 void ui_print_help() {
-    printf("\n" COLOR_BOLD_MAGENTA "=== VibeRadio Commands ===" COLOR_RESET "\n");
-    printf("  " COLOR_BOLD_GREEN "find" COLOR_RESET " or " COLOR_BOLD_GREEN "f" COLOR_RESET " " COLOR_CYAN "<query>" COLOR_RESET "   : Find stations by name/tag\n");
-    printf("  " COLOR_BOLD_GREEN "list" COLOR_RESET " or " COLOR_BOLD_GREEN "l" COLOR_RESET "           : List saved favorites\n");
-    printf("  " COLOR_BOLD_GREEN "play" COLOR_RESET " or " COLOR_BOLD_GREEN "p" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "      : Play station from the LAST SHOWN list (search or favs)\n");
-    printf("  " COLOR_BOLD_GREEN "stop" COLOR_RESET " or " COLOR_BOLD_GREEN "s" COLOR_RESET "           : Stop playback\n");
-    printf("  " COLOR_BOLD_GREEN "add" COLOR_RESET " or " COLOR_BOLD_GREEN "a" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "       : Add station from LAST SHOWN list to favorites\n");
-    printf("  " COLOR_BOLD_GREEN "del" COLOR_RESET " or " COLOR_BOLD_GREEN "d" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "       : Delete station from FAVORITES list\n");
-    printf("  " COLOR_BOLD_GREEN "help" COLOR_RESET " or " COLOR_BOLD_GREEN "?" COLOR_RESET "           : Show this message\n");
-    printf("  " COLOR_BOLD_GREEN "country" COLOR_RESET " or " COLOR_BOLD_GREEN "c" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "   : Search for stations by country code (e.g. US, DE)\n");
-    printf("  " COLOR_BOLD_GREEN "tag" COLOR_RESET " or " COLOR_BOLD_GREEN "t" COLOR_RESET " " COLOR_CYAN "<tag>" COLOR_RESET "      : Search for stations by tag (e.g. jazz, pop)\n");
-    printf("  " COLOR_BOLD_GREEN "quit" COLOR_RESET " or " COLOR_BOLD_GREEN "q" COLOR_RESET "           : Exit\n");
-    printf(COLOR_BOLD_MAGENTA "==========================" COLOR_RESET "\n");
+    printf("\n" BORDER_COLOR "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" COLOR_BOLD_MAGENTA "                                        VibeRadio Commands                                               " BORDER_COLOR "┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" HEADER_COLOR " Command                     " BORDER_COLOR "┃" HEADER_COLOR " Description                                                               " BORDER_COLOR "┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " find" COLOR_RESET " or " COLOR_BOLD_GREEN "f" COLOR_RESET " " COLOR_CYAN "<query>" COLOR_RESET "           " BORDER_COLOR "│" COLOR_RESET " Find stations by name/tag                                                 " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " list" COLOR_RESET " or " COLOR_BOLD_GREEN "l" COLOR_RESET "                   " BORDER_COLOR "│" COLOR_RESET " List saved favorites                                                      " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " play" COLOR_RESET " or " COLOR_BOLD_GREEN "p" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "              " BORDER_COLOR "│" COLOR_RESET " Play station from the LAST SHOWN list (search or favs)                    " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " stop" COLOR_RESET " or " COLOR_BOLD_GREEN "s" COLOR_RESET "                   " BORDER_COLOR "│" COLOR_RESET " Stop playback                                                             " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " add" COLOR_RESET " or " COLOR_BOLD_GREEN "a" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "               " BORDER_COLOR "│" COLOR_RESET " Add station from LAST SHOWN list to favorites                             " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " del" COLOR_RESET " or " COLOR_BOLD_GREEN "d" COLOR_RESET " " COLOR_CYAN "<id>" COLOR_RESET "               " BORDER_COLOR "│" COLOR_RESET " Delete station from FAVORITES list                                        " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " help" COLOR_RESET " or " COLOR_BOLD_GREEN "?" COLOR_RESET "                   " BORDER_COLOR "│" COLOR_RESET " Show this message                                                         " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " country" COLOR_RESET " or " COLOR_BOLD_GREEN "c" COLOR_RESET " " COLOR_CYAN "<code>" COLOR_RESET "         " BORDER_COLOR "│" COLOR_RESET " Search for stations by country code (e.g. US, DE)                         " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " tag" COLOR_RESET " or " COLOR_BOLD_GREEN "t" COLOR_RESET " " COLOR_CYAN "<tag>" COLOR_RESET "              " BORDER_COLOR "│" COLOR_RESET " Search for stations by tag (e.g. jazz, pop)                               " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "│" COLOR_BOLD_GREEN " quit" COLOR_RESET " or " COLOR_BOLD_GREEN "q" COLOR_RESET "                   " BORDER_COLOR "│" COLOR_RESET " Exit                                                                      " BORDER_COLOR "│" COLOR_RESET "\n");
+    printf(BORDER_COLOR "└─────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘" COLOR_RESET "\n");
 }
 
 void ui_print_credits() {
@@ -71,6 +76,13 @@ void ui_print_credits() {
     printf("  Author: " COLOR_BOLD_WHITE "El Gringo" COLOR_RESET "\n");
     printf("  Version: " COLOR_CYAN "0.1" COLOR_RESET "\n");
     printf(COLOR_BOLD_MAGENTA "==========================" COLOR_RESET "\n");
+
+    printf("\n" BORDER_COLOR                  "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" COLOR_BOLD_MAGENTA "                                           VibeRadio Credits                                             " BORDER_COLOR "┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" HEADER_COLOR       "         Author: " COLOR_BOLD_WHITE "El Gringo" BORDER_COLOR "                                                                               ┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" HEADER_COLOR       "         Version: " COLOR_CYAN "0.1"  BORDER_COLOR "                                                                                    ┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┃" HEADER_COLOR       "                                                                                                         ┃" COLOR_RESET "\n");
+    printf(BORDER_COLOR "┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩" COLOR_RESET "\n");
 }
 
 void ui_print_stations(const Station *stations, int count, const char *title) {
