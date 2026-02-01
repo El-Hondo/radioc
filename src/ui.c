@@ -379,45 +379,57 @@ void ui_render_interface(const Station *active_station,
 
     // 2. Draw Status Message (if any)
     if (status_message && *status_message) {
-        printf("\n" COLOR_BOLD_YELLOW ">> %s%s\n", status_message, COLOR_RESET);
+        printf("\n\033[K" COLOR_BOLD_YELLOW ">> %s%s\n", status_message, COLOR_RESET);
     }
 
     // 3. Draw Persistent "Now Playing" Banner
     if (active_station) {
-        // Calculate target width inside the box
-        // Total box width = 107. Borders = 2. Content = 105.
+        // Variable Width Configuration
+        int banner_width = 93; // Total width including borders
+        int content_width = banner_width - 2; // Width inside the borders
+        
         // Label " ♫  NOW PLAYING: " is 17 chars (1+1+2+12+1)
         // Trailing space = 1.
-        // Max name width = 105 - 17 - 1 = 87.
+        int label_len = 17;
+        int max_text_width = content_width - label_len - 1;
         
         char display_name[256];
         snprintf(display_name, sizeof(display_name), "%s", active_station->name);
         sanitize_str(display_name);
-        while (visual_width(display_name) > 87) {
+        while (visual_width(display_name) > max_text_width) {
              display_name[strlen(display_name)-1] = 0;
-             if (visual_width(display_name) <= 84) { strcat(display_name, "..."); break; }
+             if (visual_width(display_name) <= max_text_width - 3) { strcat(display_name, "..."); break; }
         }
-        int pad_name = 87 - visual_width(display_name);
+        int pad_name = max_text_width - visual_width(display_name);
         if (pad_name < 0) pad_name = 0;
 
-        printf("\n%s╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗%s\n", BORDER_COLOR, COLOR_RESET);
-        printf("%s║%s ♫  " COLOR_BOLD_CYAN "NOW PLAYING:" COLOR_BOLD_WHITE " %s%*s %s║%s\n", BORDER_COLOR, COLOR_RESET, display_name, pad_name, "", BORDER_COLOR, COLOR_RESET);
+        // Top Border
+        printf("\033[K\n\033[K%s╔", BORDER_COLOR);
+        for(int i=0; i<content_width; i++) printf("═");
+        printf("╗%s\n", COLOR_RESET);
+
+        // Name Line
+        printf("\033[K%s║%s ♫  " COLOR_BOLD_CYAN "NOW PLAYING:" COLOR_BOLD_WHITE " %s%*s %s║%s\n", BORDER_COLOR, COLOR_RESET, display_name, pad_name, "", BORDER_COLOR, COLOR_RESET);
         
         if (song_title && *song_title) {
             char display_title[256];
             snprintf(display_title, sizeof(display_title), "%s", song_title);
             sanitize_str(display_title);
-            while (visual_width(display_title) > 87) {
+            while (visual_width(display_title) > max_text_width) {
                  display_title[strlen(display_title)-1] = 0;
-                 if (visual_width(display_title) <= 84) { strcat(display_title, "..."); break; }
+                 if (visual_width(display_title) <= max_text_width - 3) { strcat(display_title, "..."); break; }
             }
-            int pad_title = 87 - visual_width(display_title);
+            int pad_title = max_text_width - visual_width(display_title);
             if (pad_title < 0) pad_title = 0;
             
             // Align "INFO:" to match "NOW PLAYING:" length (12 chars) -> "INFO:       "
-            printf("%s║%s ♬  " COLOR_CYAN "INFO:       " COLOR_WHITE " %s%*s %s║%s\n", BORDER_COLOR, COLOR_RESET, display_title, pad_title, "", BORDER_COLOR, COLOR_RESET);
+            printf("\033[K%s║%s ♬  " COLOR_CYAN "INFO:       " COLOR_WHITE " %s%*s %s║%s\n", BORDER_COLOR, COLOR_RESET, display_title, pad_title, "", BORDER_COLOR, COLOR_RESET);
         }
-        printf("%s╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝%s\n", BORDER_COLOR, COLOR_RESET);
+        
+        // Bottom Border
+        printf("\033[K%s╚", BORDER_COLOR);
+        for(int i=0; i<content_width; i++) printf("═");
+        printf("╝%s\n", COLOR_RESET);
     }
 
     // Clear the rest of the screen and flush
