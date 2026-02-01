@@ -1,3 +1,7 @@
+/**
+ * @file config.c
+ * @brief Configuration loading and saving.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +13,7 @@ static const char* get_config_path() {
     const char *home = getenv("HOME");
     if (!home) home = ".";
     // We'll store it alongside favorites
-    snprintf(path, sizeof(path), "%s/.viberadio_config.json", home);
+    snprintf(path, sizeof(path), "%s/.radioc_config.json", home);
     return path;
 }
 

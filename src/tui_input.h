@@ -15,14 +15,21 @@ enum EditorKey {
   PAGE_DOWN
 };
 
-// Enable raw text mode (disables buffering and echoing)
+/**
+ * @brief Enable raw text mode.
+ * Disables canonical mode (line buffering) and echoing to read keys directly.
+ */
 void tui_enable_raw_mode();
 
-// Restore terminal to normal canonical mode
+/**
+ * @brief Restore terminal to normal canonical mode.
+ */
 void tui_disable_raw_mode();
 
-// Read a single keypress. Returns the key code or 0 if no input waiting (if non-blocking)
-// But standard read() blocks. We might want a blocking read that returns keys.
+/**
+ * @brief Read a single keypress.
+ * @return The key code (char or special enum value) or 0 if no input is waiting.
+ */
 int tui_read_key();
 
 #endif

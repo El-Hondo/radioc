@@ -1,3 +1,7 @@
+/**
+ * @file tui_input.c
+ * @brief Raw terminal input handling.
+ */
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -27,27 +31,19 @@ void tui_enable_raw_mode() {
   // Input flags: disable flow control, etc.
   raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
   
-  // Output flags: disable output processing (newline translation)
-  // We keep OPOST (implied) usually for \n -> \r\n but typically raw mode disables it.
-  // For now let's only disable OPOST if we want full manual control. 
-  // Ideally, keep OPOST until we fix all printfs to use \r\n.
-  // raw.c_oflag &= ~(OPOST); 
+  // Output flags:
+  // We keep OPOST enabled so that \n is automatically translated to \r\n.
+  // If we disabled OPOST, we would need to fix all printfs to use \r\n manually. 
 
   // Control flags
   raw.c_cflag |= (CS8);
 
   // Local flags: disable echo, canonical mode (line buffering), signals (ctrl-c/z)
-  // We keep ISIG (Ctrl-C) for panic exit for now? 
-  // User said "stop key would immediately stop", so we probably want to handle Ctrl-C manually or let it kill.
-  // Let's disable ECHO and ICANON.
   raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 
-  // Timeout for read -> return immediately if no input?
-  // VMIN = 0, VTIME = 1 means returns as soon as data or 100ms timeout.
-  // We want blocking read for tui_read_key() usually, but maybe check for UI updates?
-  // Let's stick to standard VMIN=1 (blocking until byte) for now to save CPU.
+  // Timeout for read: 100ms timeout (VTIME=1), return as soon as data available (VMIN=0)
   raw.c_cc[VMIN] = 0;
-  raw.c_cc[VTIME] = 1; // 100ms timeout
+  raw.c_cc[VTIME] = 1; 
 
   if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) 
     perror("tcsetattr");

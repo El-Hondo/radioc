@@ -7,13 +7,23 @@ typedef struct {
     int last_station_id;  // future use
 } AppConfig;
 
-// Load config from disk. Returns 0 on success, -1 on failure (and sets defaults)
+/**
+ * @brief Load configuration from disk.
+ * @param config Pointer to AppConfig struct to fill.
+ * @return 0 on success, -1 on failure (defaults will be set on failure).
+ */
 int config_load(AppConfig *config);
 
-// Save config to disk.
+/**
+ * @brief Save configuration to disk.
+ * @param config Pointer to the AppConfig struct to save.
+ */
 void config_save(const AppConfig *config);
 
-// Get default config
+/**
+ * @brief Set default values for the configuration.
+ * @param config Pointer to the AppConfig struct to initialize.
+ */
 void config_set_defaults(AppConfig *config);
 
 #endif

@@ -1,3 +1,7 @@
+/**
+ * @file favorites.c
+ * @brief Management of favorite stations list.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +16,7 @@ static const char* get_config_path() {
     static char path[1024];
     const char *home = getenv("HOME");
     if (!home) home = ".";
-    snprintf(path, sizeof(path), "%s/.viberadio_favorites.json", home);
+    snprintf(path, sizeof(path), "%s/.radioc_favorites.json", home);
     return path;
 }
 

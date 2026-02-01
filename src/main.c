@@ -1,3 +1,7 @@
+/**
+ * @file main.c
+ * @brief Main application entry point and event loop.
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,8 +15,6 @@
 #include "tui_input.h"
 #include "config.h"
 
-// State to track what the indices [1], [2] refer to
-// It can be either the search results or the favorites list
 // State to track what the indices [1], [2] refer to
 // It can be either the search results or the favorites list
 typedef enum {
@@ -44,8 +46,7 @@ int main() {
     // UI State
     Station *active_station = NULL;
     char *current_song_title = NULL; // Helper to track title
-    char status_message[256] = "";
-    int show_list = 1; // Start by showing favorites
+    char status_message[512] = "";
 
     // Load Config
     AppConfig config;
@@ -57,17 +58,8 @@ int main() {
     
     // Apply Settings
     ui_set_theme(config.theme); // Apply loaded theme
-    player_set_volume(config.volume - player_get_volume());
-    // Wait, player_set_volume adds/subtracts. We need absolute set.
-    // Let's assume player starts at ~50 or we should fix player API?
-    // Let's fix player API in next step. For now, hack it:
-    // Actually, libvlc defaults to 100 often, or 50.
-    // Best way: player_set_volume currently is relative. 
-    // I entered a relative implementation in player.c. I should add player_set_volume_absolute.
-    // Or just loop until it matches? No.
-    // Let's modify player.c to add absolute set, or direct access.
-    // I'll stick to logic: current vol = X. Target = config.volume. Adjustment = Target - X.
-    // player_set_volume(config.volume - player_get_volume()) works nicely if player_get_volume works!
+    
+    // Sync player volume with config
     int current_vol = player_get_volume();
     player_set_volume(config.volume - current_vol);
 
@@ -87,7 +79,7 @@ int main() {
 
 
     // Initial render
-    ui_render_interface(active_station, NULL, "Welcome to VibeRadio!", fav_list, fav_count, "Favorites", 0);
+    ui_render_interface(active_station, NULL, "Welcome to radio.c!", fav_list, fav_count, "Favorites", 0);
 
     // Main Loop
     int running = 1;
@@ -113,7 +105,7 @@ int main() {
             continue; 
         }
 
-        char status_buf[256] = "";
+        char status_buf[512] = "";
 
         // Process Key
         switch (c) {
@@ -207,7 +199,6 @@ int main() {
                  current_mode = MODE_FAVORITES;
                  current_view = VIEW_MAIN; // Return to main view
                  selected_global_index = 0;
-                 show_list = 1;
                  snprintf(status_buf, sizeof(status_buf), "Switched to Favorites.");
                  break;
 
@@ -263,7 +254,6 @@ int main() {
                                 search_count = n;
                                 current_mode = MODE_SEARCH_RESULTS;
                                 current_view = VIEW_MAIN; // Go to results
-                                show_list = 1;
                                 selected_global_index = 0; // Reset selection
                                 snprintf(status_buf, sizeof(status_buf), "Found %d stations for '%s'.", n, search_buf);
                             } else {
@@ -298,7 +288,6 @@ int main() {
                                 search_count = n;
                                 current_mode = MODE_SEARCH_RESULTS;
                                 current_view = VIEW_MAIN;
-                                show_list = 1;
                                 selected_global_index = 0;
                                 snprintf(status_buf, sizeof(status_buf), "Found %d stations with tag '%s'.", n, search_buf);
                             } else {
@@ -338,7 +327,6 @@ int main() {
                                 search_count = n;
                                 current_mode = MODE_SEARCH_RESULTS;
                                 current_view = VIEW_MAIN;
-                                show_list = 1;
                                 selected_global_index = 0;
                                 snprintf(status_buf, sizeof(status_buf), "Found %d stations in '%s'.", n, search_buf);
                             } else {
@@ -353,7 +341,6 @@ int main() {
                 break;
 
             default:
-                // snprintf(status_buf, sizeof(status_buf), "Key: %d", c); // Debug
                 break;
         }
 
@@ -371,7 +358,6 @@ int main() {
             }
         }
 
-        // ui_clear_screen(); // Removed to prevent flickering
         if (current_view == VIEW_HELP) {
             ui_print_help();
             if (active_station) {

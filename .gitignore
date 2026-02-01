@@ -1,0 +1,12 @@
+# Binaries
+radioc
+*.o
+obj/
+
+# Config
+config.json
+
+# Editor
+.vscode/
+.idea/
+*.swp

@@ -58,20 +58,38 @@ extern UITheme current_theme;
 #define TAGS_COLOR        current_theme.tags
 #define VOTES_COLOR       current_theme.votes
 
-// Function to set theme by name
+/**
+ * @brief Set the active UI theme by name.
+ * @param theme_name Name of the theme to apply (e.g., "tokyo", "euro").
+ */
 void ui_set_theme(const char *theme_name);
 
-// Cycle to next available theme
+/**
+ * @brief Cycle to the next available theme.
+ */
 void ui_cycle_theme();
 
-// Cleanup UI (e.g. leave alternate screen buffer)
+/**
+ * @brief Cleanup the UI system.
+ * Restores main screen buffer and resets colors.
+ */
 void ui_cleanup();
 
-// Clears the terminal screen
+/**
+ * @brief Clear the terminal screen.
+ */
 void ui_clear_screen();
 
-// Main render function to draw the persistent UI
-// selected_index: -1 for none, or 0-based index to highlight
+/**
+ * @brief Main function to render the persistent UI interface.
+ * @param active_station Currently playing station (or NULL).
+ * @param song_title Metadata string for current song (or NULL).
+ * @param status_message Status message string (or NULL).
+ * @param list Array of stations to list (or NULL).
+ * @param list_count Number of stations in list.
+ * @param list_title Title of the list section.
+ * @param selected_index Index to highlight in the list, or -1.
+ */
 void ui_render_interface(const Station *active_station, 
                          const char *song_title, 
                          const char *status_message, 
@@ -80,6 +98,14 @@ void ui_render_interface(const Station *active_station,
                          const char *list_title,
                          int selected_index);
 
+/**
+ * @brief Helper to print the list of stations.
+ * @param stations Array of stations.
+ * @param count Number of stations.
+ * @param title Title of the table.
+ * @param selected_index Global index of selection.
+ * @param start_index Index offset for pagination.
+ */
 void ui_print_stations(const Station *stations, int count, const char *title, int selected_index, int start_index);
 
 #endif

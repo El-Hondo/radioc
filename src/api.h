@@ -12,15 +12,31 @@ typedef struct {
     int votes;
 } Station;
 
-// Searches for stations by name/tag.
-// Returns the number of stations found, or -1 on error.
-// Fills the 'results' array up to 'max_results'.
+/**
+ * @brief Searches for stations by name or tag.
+ * @param query The search string.
+ * @param results Array to store found stations.
+ * @param max_results Maximum number of results to return (capacity of results array).
+ * @return Number of stations found, or -1 on error.
+ */
 int api_search_stations(const char *query, Station *results, int max_results);
 
-// Searches for stations by country code (e.g., 'US', 'DE')
+/**
+ * @brief Searches for stations by country code.
+ * @param country_code Two-letter country code (e.g., "US", "DE").
+ * @param results Array to store found stations.
+ * @param max_results Maximum number of results to return.
+ * @return Number of stations found, or -1 on error.
+ */
 int api_search_by_country(const char *country_code, Station *results, int max_results);
 
-// Searches for stations by tag (e.g., 'jazz', 'news')
+/**
+ * @brief Searches for stations by tag.
+ * @param tag The tag to search for (e.g., "jazz", "news").
+ * @param results Array to store found stations.
+ * @param max_results Maximum number of results to return.
+ * @return Number of stations found, or -1 on error.
+ */
 int api_search_by_tag(const char *tag, Station *results, int max_results);
 
 #endif

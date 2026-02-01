@@ -1,3 +1,7 @@
+/**
+ * @file api.c
+ * @brief API interaction for searching stations.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,7 +60,7 @@ static int api_search_generic(const char *param, const char *query, Station *res
     curl_easy_setopt(curl_handle, CURLOPT_URL, url);
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
-    curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "viberadio/1.0");
+    curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "radioc/1.0");
 
     res = curl_easy_perform(curl_handle);
 

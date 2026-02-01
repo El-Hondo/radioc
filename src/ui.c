@@ -1,3 +1,7 @@
+/**
+ * @file ui.c
+ * @brief TUI rendering and layout logic.
+ */
 #define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <string.h>
@@ -182,7 +186,7 @@ void ui_print_help() {
     }
 
     printf("%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
-    printf("%s┃" COLOR_BOLD_MAGENTA "                                     📻  VibeRadio Commands 📻                                           %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃" COLOR_BOLD_MAGENTA "                                     📻  radio.c Commands 📻                                             %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s Command                     %s┃%s Description                                                               %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
@@ -212,14 +216,14 @@ void ui_print_credits() {
     }
 
     printf("%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
-    printf("%s┃" COLOR_BOLD_MAGENTA "                                         ✨ VibeRadio Credits ✨                                         %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃" COLOR_BOLD_MAGENTA "                                         ✨ radio.c Credits ✨                                           %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    👨‍💻  Author: " COLOR_BOLD_WHITE "El Gringo" "                                                                              %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    🏷️  Version: " COLOR_CYAN "0.1"  "                                                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    📧  Contact: " COLOR_BOLD_CYAN "your.email@example.com" "                                                                  %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s┃%s    🐙  GitHub:  " COLOR_BOLD_BLUE "github.com/your-username/viberadio" "                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃%s    🐙  GitHub:  " COLOR_BOLD_BLUE "github.com/your-username/radioc" "                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    Made with ❤️  and " COLOR_BOLD_GREEN "C%s & " COLOR_BOLD_MAGENTA "Antigravity%s                                                                     %s┃%s\n", BORDER_COLOR, HEADER_COLOR, COLOR_RESET, COLOR_RESET, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);

@@ -5,20 +5,34 @@
 
 #define MAX_FAVORITES 100
 
-// Initialize/Load favorites from disk
-// Returns number of favorites loaded
+/**
+ * @brief Initialize and load favorites from the standard location.
+ * @return Number of favorites loaded.
+ */
 int favorites_load();
 
-// Add a station to favorites
+/**
+ * @brief Add a station to the favorites list.
+ * @param s Pointer to the Station struct to add.
+ */
 void favorites_add(const Station *s);
 
-// Remove a station from favorites by index (0-based from list)
+/**
+ * @brief Remove a station from favorites by its index.
+ * @param index The 0-based index of the station to remove.
+ */
 void favorites_remove(int index);
 
-// Get the current list of favorites
+/**
+ * @brief Get the current list of favorites.
+ * @param count Output pointer to store the number of favorites.
+ * @return Pointer to the internal favorites array.
+ */
 Station* favorites_get_list(int *count);
 
-// Save favorites to disk
+/**
+ * @brief Save the current favorites list to disk.
+ */
 void favorites_save();
 
 #endif

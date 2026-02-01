@@ -10,7 +10,7 @@ OBJ = $(patsubst %.c, obj/%.o, $(notdir $(SRC)))
 # This requires VPATH to find sources in src/ and lib/
 VPATH = src:lib
 
-TARGET = viberadio
+TARGET = radioc
 
 all: $(TARGET)
 
