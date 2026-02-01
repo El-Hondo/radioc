@@ -371,7 +371,7 @@ int main() {
             }
         }
 
-        ui_clear_screen();
+        // ui_clear_screen(); // Removed to prevent flickering
         if (current_view == VIEW_HELP) {
             ui_print_help();
             if (active_station) {

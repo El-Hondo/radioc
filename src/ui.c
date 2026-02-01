@@ -173,7 +173,15 @@ static int visual_width(const char *s) {
 
 // 105 chars of internal width: 29 for Command, 75 for Description, 1 for separator. Total 105.
 void ui_print_help() {
-    printf("\n%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
+    // Move to home, ensure background
+    printf("\033[H");
+    if (current_theme.background && *current_theme.background) {
+         printf("%s", current_theme.background);
+    } else {
+         printf("\033[49m");
+    }
+
+    printf("%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃" COLOR_BOLD_MAGENTA "                                     📻  VibeRadio Commands 📻                                           %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s Command                     %s┃%s Description                                                               %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
@@ -189,10 +197,21 @@ void ui_print_help() {
     printf("%s│" COLOR_BOLD_GREEN " tag" " or " COLOR_BOLD_GREEN "t" " " COLOR_CYAN "<tag>" "              %s│" " Search for stations by tag (e.g. jazz, pop)                               %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " quit" " or " COLOR_BOLD_GREEN "q" "                   %s│" " Exit                                                                      %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s└─────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘%s\n", BORDER_COLOR, COLOR_RESET);
+    
+    // Clear rest of screen
+    printf("\033[J");
 }
 
 void ui_print_credits() {
-    printf("\n%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
+    // Move to home, ensure background
+    printf("\033[H");
+    if (current_theme.background && *current_theme.background) {
+         printf("%s", current_theme.background);
+    } else {
+         printf("\033[49m");
+    }
+
+    printf("%s┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃" COLOR_BOLD_MAGENTA "                                         ✨ VibeRadio Credits ✨                                         %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
@@ -205,6 +224,9 @@ void ui_print_credits() {
     printf("%s┃%s    Made with ❤️  and " COLOR_BOLD_GREEN "C%s & " COLOR_BOLD_MAGENTA "Antigravity%s                                                                     %s┃%s\n", BORDER_COLOR, HEADER_COLOR, COLOR_RESET, COLOR_RESET, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛%s\n", BORDER_COLOR, COLOR_RESET);
+    
+    // Clear rest of screen
+    printf("\033[J");
 }
 
 void ui_print_stations(const Station *stations, int count, const char *title, int selected_index, int start_index) {
@@ -318,7 +340,14 @@ void ui_render_interface(const Station *active_station,
                          const char *list_title,
                          int selected_index) {
     
-    ui_clear_screen();
+    // ui_clear_screen(); // Removed to prevent flickering
+    // Move cursor to top-left and ensure background is set
+    printf("\033[H");
+    if (current_theme.background && *current_theme.background) {
+        printf("%s", current_theme.background);
+    } else {
+        printf("\033[49m");
+    }
 
     // 1. Draw List if available
     if (list && list_count > 0) {
@@ -386,4 +415,8 @@ void ui_render_interface(const Station *active_station,
         }
         printf("%s╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝%s\n", BORDER_COLOR, COLOR_RESET);
     }
+
+    // Clear the rest of the screen and flush
+    printf("\033[J");
+    fflush(stdout);
 }
