@@ -35,17 +35,9 @@ sudo apt install libvlc-dev libcurl4-openssl-dev libreadline-dev build-essential
 sudo pacman -S vlc curl readline base-devel
 ```
 
-### Build
-
-Clone the repository and run `make`:
-
-```bash
-git clone https://github.com/yourusername/radioc.git
+git clone https://github.com/El-Hondo/radioc.git
 cd radioc
 make
-```
-
-## Usage
 
 Run the application:
 
