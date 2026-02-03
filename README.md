@@ -1,8 +1,9 @@
 # radio.c 📻
+![AI Assisted](https://img.shields.io/badge/AI-Assisted-purple)
 
 A lightweight, terminal-based internet radio player written in C.
 
-![radio.c Screenshot](https://via.placeholder.com/800x400?text=radio.c+Screenshot) 
+![radio.c Screenshot](assets/screenshot.png)
 
 ## Features
 
