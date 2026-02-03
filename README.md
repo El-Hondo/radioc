@@ -70,8 +70,9 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## Roadmap 🗺️
 
 - [ ] **Recording Support**: Save live radio streams to disk.
-- [ ] **Adaptive UI**: Automatically adjust border widths and layout based on terminal size.
+- [x] **Adaptive UI**: Automatically adjust border widths and layout based on terminal size.
 - [ ] **Visualizer**: Simple Audio visualization in the terminal.
+- [ ] **Packaging**: Create native packages (.deb, .rpm) for easier distribution.
 
 ## AI Transparency
 
