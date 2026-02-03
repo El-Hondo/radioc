@@ -13,6 +13,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "tui_input.h"
+
 #include "config.h"
 
 // State to track what the indices [1], [2] refer to
@@ -194,6 +195,52 @@ int main() {
                 }
                 break;
                 
+            case 'a': // Add to Favorites
+                 if (current_view == VIEW_MAIN) {
+                    Station *target_list = (current_mode == MODE_SEARCH_RESULTS) ? search_results : fav_list;
+                    int max_len = (current_mode == MODE_SEARCH_RESULTS) ? search_count : fav_count;
+                    
+                    if (selected_global_index >= 0 && selected_global_index < max_len) {
+                         Station *s = &target_list[selected_global_index];
+                         favorites_add(s);
+                         favorites_save(); // Persist immediately
+                         // Reload fav list pointer as realloc might have moved it
+                         fav_list = favorites_get_list(&fav_count); 
+                         snprintf(status_buf, sizeof(status_buf), "Added '%s' to Favorites.", s->name);
+                    }
+                 }
+                 break;
+
+            case 'd': // Delete from Favorites
+                 if (current_view == VIEW_MAIN) {
+                     if (current_mode == MODE_FAVORITES) {
+                        if (selected_global_index >= 0 && selected_global_index < fav_count) {
+                            // Get name for status message
+                            char del_name[256];
+                            strncpy(del_name, fav_list[selected_global_index].name, sizeof(del_name));
+                            del_name[255] = '\0'; // Ensure null term
+
+                            favorites_remove(selected_global_index);
+                            favorites_save();
+                            
+                            // Reload list
+                            fav_list = favorites_get_list(&fav_count);
+                            
+                            // Adjust binding if we deleted the last item
+                            if (selected_global_index >= fav_count && fav_count > 0) {
+                                selected_global_index = fav_count - 1;
+                            } else if (fav_count == 0) {
+                                selected_global_index = 0;
+                            }
+                            
+                            snprintf(status_buf, sizeof(status_buf), "Deleted '%s' from Favorites.", del_name);
+                        }
+                     } else {
+                         snprintf(status_buf, sizeof(status_buf), "Can only delete from Favorites list.");
+                     }
+                 }
+                 break;
+
             case 'l': // List Favorites
                  fav_list = favorites_get_list(&fav_count);
                  current_mode = MODE_FAVORITES;

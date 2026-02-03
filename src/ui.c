@@ -344,7 +344,7 @@ void ui_render_interface(const Station *active_station,
                          const char *list_title,
                          int selected_index) {
     
-    // ui_clear_screen(); // Removed to prevent flickering
+    ui_clear_screen(); // Re-enabled to fix artifacts
     // Move cursor to top-left and ensure background is set
     printf("\033[H");
     if (current_theme.background && *current_theme.background) {

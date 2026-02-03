@@ -66,10 +66,21 @@ Run the application:
 | `l` | List Favorites |
 | `a` | Add current station to Favorites |
 | `d` | Delete from Favorites |
-| `T` | Cycle Themes |
+| `Shift + t` | Cycle Themes |
 | `?` | Help |
 | `q` | Quit |
 
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+
+## Roadmap 🗺️
+
+- [ ] **Recording Support**: Save live radio streams to disk.
+- [ ] **Adaptive UI**: Automatically adjust border widths and layout based on terminal size.
+- [ ] **Visualizer**: Simple Audio visualization in the terminal.
+
+## AI Transparency
+
+This software was developed with the assistance of **Google Antigravity**. The project is as an experiment in AI-assisted coding, where architecture, debugging, and implementation were collaboratively developed.
+
