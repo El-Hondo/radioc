@@ -1,7 +1,7 @@
 #ifndef API_H
 #define API_H
 
-#define MAX_STATIONS 50
+#define MAX_STATIONS 250
 
 typedef struct {
     char name[256];

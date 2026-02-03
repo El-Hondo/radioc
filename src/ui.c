@@ -443,7 +443,21 @@ void ui_render_interface(const Station *active_station,
 
     // 1. Draw List if available
     if (list && list_count > 0) {
-        int page_size = 25;
+        int rows, cols;
+        ui_get_term_size(&rows, &cols);
+
+        // Calculate available vertical space
+        // Overhead Estimate:
+        // - 1 (Title/Sep)
+        // - 3 (Header with borders)
+        // - 1 (Bottom border)
+        // - 2 (Status area)
+        // - 6 (Banner area if active, approx)
+        // Total ~13-15 lines. Using 15 to be safe.
+        int overhead = 15;
+        int page_size = rows - overhead;
+        if (page_size < 5) page_size = 5; // Minimum 5 items to keep UI sane
+        
         // Determine start_index based on selected_index
         // We want selected_index to be visible.
         // Simple Logic: Page = selected_index / page_size
@@ -476,8 +490,8 @@ void ui_render_interface(const Station *active_station,
         int rows, cols;
         ui_get_term_size(&rows, &cols);
         int banner_width = cols - 1; // Margin matched to table (was -4)
-        if (banner_width < 60) banner_width = 60; // Min
-        if (banner_width > 120) banner_width = 120; // Max
+        if (banner_width < 40) banner_width = 40; // Soft floor to prevent absolute implosion, but small enough to fit most "phone" term sizes
+        // Removed max width limit to allow full expansion
 
         int content_width = banner_width - 2; // Width inside the borders
         

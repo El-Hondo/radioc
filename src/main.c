@@ -15,6 +15,15 @@
 #include "tui_input.h"
 
 #include "config.h"
+#include <signal.h>
+
+// Signal flag
+volatile sig_atomic_t resize_requested = 0;
+
+void handle_winch(int sig) {
+    (void)sig;
+    resize_requested = 1;
+}
 
 // State to track what the indices [1], [2] refer to
 // It can be either the search results or the favorites list
@@ -36,6 +45,9 @@ int main() {
     
     // Switch to alternate screen buffer
     ui_init();
+
+    // Register Resize Handler
+    signal(SIGWINCH, handle_winch);
 
     // Initialization
     if (player_init() != 0) {
@@ -95,6 +107,21 @@ int main() {
     int selected_global_index = 0; // 0-based index in the current list
     
     while (running) {
+        // Check for resize
+        if (resize_requested) {
+            resize_requested = 0;
+            // Force re-render with new dimensions
+            // Re-eval context for render
+             Station *list_to_show = (current_mode == MODE_FAVORITES) ? fav_list : search_results;
+             int list_count_to_show = (current_mode == MODE_FAVORITES) ? fav_count : search_count;
+             const char *list_title = (current_mode == MODE_FAVORITES) ? "Favorites" : "Search Results";
+             
+             if (current_view == VIEW_HELP) ui_print_help();
+             else if (current_view == VIEW_CREDITS) ui_print_credits();
+             else ui_render_interface(active_station, current_song_title, status_message, list_to_show, list_count_to_show, list_title, selected_global_index);
+             fflush(stdout);
+        }
+
         // Read key (with timeout)
         int c = tui_read_key();
         
