@@ -10,6 +10,13 @@ void ui_print_credits();
 // Initialize UI (e.g. enter alternate screen buffer)
 void ui_init();
 
+/**
+ * @brief Get the current terminal size.
+ * @param rows Output pointer for number of rows.
+ * @param cols Output pointer for number of columns.
+ */
+void ui_get_term_size(int *rows, int *cols);
+
 // ANSI Color Codes
 #define COLOR_RESET       current_theme.reset
 #define COLOR_BOLD        "\033[1m"
