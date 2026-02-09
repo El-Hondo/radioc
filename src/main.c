@@ -224,17 +224,19 @@ int main() {
                 
             case 'a': // Add to Favorites
                  if (current_view == VIEW_MAIN) {
-                    Station *target_list = (current_mode == MODE_SEARCH_RESULTS) ? search_results : fav_list;
-                    int max_len = (current_mode == MODE_SEARCH_RESULTS) ? search_count : fav_count;
-                    
-                    if (selected_global_index >= 0 && selected_global_index < max_len) {
-                         Station *s = &target_list[selected_global_index];
-                         favorites_add(s);
-                         favorites_save(); // Persist immediately
-                         // Reload fav list pointer as realloc might have moved it
-                         fav_list = favorites_get_list(&fav_count); 
-                         snprintf(status_buf, sizeof(status_buf), "Added '%s' to Favorites.", s->name);
-                    }
+                     if (current_mode != MODE_FAVORITES) {
+                        Station *target_list = (current_mode == MODE_SEARCH_RESULTS) ? search_results : fav_list;
+                        int max_len = (current_mode == MODE_SEARCH_RESULTS) ? search_count : fav_count;
+                        
+                        if (selected_global_index >= 0 && selected_global_index < max_len) {
+                            Station *s = &target_list[selected_global_index];
+                            favorites_add(s);
+                            favorites_save(); // Persist immediately
+                            // Reload fav list pointer as realloc might have moved it
+                            fav_list = favorites_get_list(&fav_count); 
+                            snprintf(status_buf, sizeof(status_buf), "Added '%s' to Favorites.", s->name);
+                        }
+                     }
                  }
                  break;
 

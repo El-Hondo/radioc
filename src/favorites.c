@@ -89,6 +89,14 @@ void favorites_save() {
 
 void favorites_add(const Station *s) {
     if (s_fav_count >= MAX_FAVORITES) return;
+
+    // Check for duplicates
+    for (int i = 0; i < s_fav_count; i++) {
+        if (strcmp(s_favorites[i].station_uuid, s->station_uuid) == 0) {
+            return; // Already exists
+        }
+    }
+
     s_favorites[s_fav_count] = *s;
     s_fav_count++;
     favorites_save();

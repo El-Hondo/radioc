@@ -209,10 +209,10 @@ void ui_print_help() {
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " find" " or " COLOR_BOLD_GREEN "f" " " COLOR_CYAN "<query>" "           %s│" " Find stations by name/tag                                                 %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " list" " or " COLOR_BOLD_GREEN "l" "                   %s│" " List saved favorites                                                      %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s│" COLOR_BOLD_GREEN " play" " or " COLOR_BOLD_GREEN "p" " " COLOR_CYAN "<id>" "              %s│" " Play station from the LAST SHOWN list (search or favs)                    %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s│" COLOR_BOLD_GREEN " play" " or " COLOR_BOLD_GREEN "p" "                   %s│" " Play currently selected station                                           %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " stop" " or " COLOR_BOLD_GREEN "s" "                   %s│" " Stop playback                                                             %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s│" COLOR_BOLD_GREEN " add"  " or " COLOR_BOLD_GREEN "a" " " COLOR_CYAN "<id>" "               %s│" " Add station from LAST SHOWN list to favorites                             %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s│" COLOR_BOLD_GREEN " del"  " or " COLOR_BOLD_GREEN "d" " " COLOR_CYAN "<id>" "               %s│" " Delete station from FAVORITES list                                        %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s│" COLOR_BOLD_GREEN " add"  " or " COLOR_BOLD_GREEN "a" "                   %s│" " Add currently selected station to Favorites                               %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s│" COLOR_BOLD_GREEN " del"  " or " COLOR_BOLD_GREEN "d" "                   %s│" " Delete currently selected station from Favorites                          %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " help" " or " COLOR_BOLD_GREEN "?" "                   %s│" " Show this message                                                         %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " country" " or " COLOR_BOLD_GREEN "c" " " COLOR_CYAN "<code>" "         %s│" " Search for stations by country code (e.g. US, DE)                         %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s│" COLOR_BOLD_GREEN " tag" " or " COLOR_BOLD_GREEN "t" " " COLOR_CYAN "<tag>" "              %s│" " Search for stations by tag (e.g. jazz, pop)                               %s│%s\n", BORDER_COLOR, BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
@@ -225,6 +225,7 @@ void ui_print_help() {
 
 void ui_print_credits() {
     // Move to home, ensure background
+    ui_clear_screen();
     printf("\033[H");
     if (current_theme.background && *current_theme.background) {
          printf("%s", current_theme.background);
@@ -236,11 +237,11 @@ void ui_print_credits() {
     printf("%s┃" COLOR_BOLD_MAGENTA "                                         ✨ radio.c Credits ✨                                           %s┃%s\n", BORDER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s┃%s    👨‍💻  Author: " COLOR_BOLD_WHITE "El Hondo" "                                                                              %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃%s    👨‍💻  Author: " COLOR_BOLD_WHITE "El Hondo" "                                                                               %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    🏷️  Version: " COLOR_CYAN "0.1"  "                                                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    📧  Contact: " COLOR_BOLD_CYAN "your.email@example.com" "                                                                  %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s┃%s    🐙  GitHub:  " COLOR_BOLD_BLUE "github.com/your-username/radioc" "                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃%s    🐙  GitHub:  " COLOR_BOLD_BLUE "https://github.com/El-Hondo/radioc" "                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    Made with ❤️  and " COLOR_BOLD_GREEN "C%s & " COLOR_BOLD_MAGENTA "Antigravity%s                                                                     %s┃%s\n", BORDER_COLOR, HEADER_COLOR, COLOR_RESET, COLOR_RESET, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
