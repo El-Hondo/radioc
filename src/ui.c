@@ -12,7 +12,9 @@
 #include <locale.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <unistd.h>
 #include "ui.h"
+#include "api.h"
 
 
 // Global Theme Instance
@@ -238,7 +240,7 @@ void ui_print_credits() {
     printf("%s┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩%s\n", BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    👨‍💻  Author: " COLOR_BOLD_WHITE "El Hondo" "                                                                               %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
-    printf("%s┃%s    🏷️  Version: " COLOR_CYAN "0.1"  "                                                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
+    printf("%s┃%s    🏷️  Version: " COLOR_CYAN "%s"  "                                                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, RA_VERSION, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s                                                                                                         %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    📧  Contact: " COLOR_BOLD_CYAN "your.email@example.com" "                                                                  %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);
     printf("%s┃%s    🐙  GitHub:  " COLOR_BOLD_BLUE "https://github.com/El-Hondo/radioc" "                                                      %s┃%s\n", BORDER_COLOR, HEADER_COLOR, BORDER_COLOR, COLOR_RESET);

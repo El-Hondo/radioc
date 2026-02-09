@@ -2,6 +2,7 @@
 #define API_H
 
 #define MAX_STATIONS 250
+#define RA_VERSION "0.2"
 
 typedef struct {
     char name[256];
